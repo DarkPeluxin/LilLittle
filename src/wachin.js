@@ -141,8 +141,8 @@ client.on('message', async message => {
 });
 
 client.on("messageDelete", (message) => {
-    let canal = client.channels.cache.get('781098623739101197');
-    message.channel.send({embed: {
+    let canal = client.channels.cache.get('782138729354493952');
+    canal.send({embed: {
         color: 6184542,
         author: {
             name: (`${message.author.username} (${message.author.id})`),
