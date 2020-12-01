@@ -14,10 +14,11 @@ client.on('ready', () => {
             type: "PLAYING"
         },
         status: "idle"
-    });
+    })
 });
 
 client.on('message', async message => {
+
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
     const command = args.shift().toLowerCase();
 
@@ -44,9 +45,35 @@ client.on('message', async message => {
         })
         message.delete();
     };
-   
+
+    if(command === 'safa'){
+
+        message.delete();
+
+    if(!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send("No tienes permisos.")
+    if(!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send("No tengo el permiso correcto.")
     
+    const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+    let razon = args.slice(1).join(" ");
+
+    if(!args[0]) return message.channel.send('Parece que no puedo encontrar a éste usuario.');
+    if(!razon) return message.channel.send('Especifica la razón.');
+
+    user.ban({
+        reason: razon
+    }); 
+
+    message.channel.send(`:warning:   ${user.toString()} se le ha restringido de **Intocables RP**.`)
+    const embed = new Discord.MessageEmbed()
+    .setDescription(`Razón: _${razon}_`)
+    .setColor("#022546")
+    message.channel.send(embed);
+    };
+
     if(command === 'ñofi') {
+
+        message.delete();
+
         let user = message.mentions.users.first();
         if (!user) return message.channel.send(`¿Se supone que tengo que adivinar a quién botar? Idiota.`)
         let razon = args.slice(1).join(' ');
@@ -62,7 +89,7 @@ client.on('message', async message => {
         .setDescription(`Razón: _${razon}_`)
         .setColor("RED")
         message.channel.send(embed);
-        message.delete();
+        
     };
 
     if(command == 'clean') {
@@ -74,6 +101,9 @@ client.on('message', async message => {
     };
 
     if(command === 'shh') {
+
+        message.delete();
+
     if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send('Bajito, no tienes poder.')
 
     let channels = message.guild.channels.cache.filter(ch => ch.type !== 'category');
@@ -95,10 +125,13 @@ client.on('message', async message => {
        .setDescription(`Razón: _${razon}_`)
        .setColor("BLUE")
        message.channel.send(embed);
-       message.delete();
+       
     };
     
     if(command === "call") {
+        
+        message.delete();
+
     if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send('Bajito, no tienes poder.')
 
         let channels = message.guild.channels.cache.filter(ch => ch.type !== 'category');
@@ -114,7 +147,7 @@ client.on('message', async message => {
         })
 
         message.channel.send(`:microphone2:  ${message.author} le abrió el ano a ${user.toString()}, ahora puedes hablar.`)
-        message.delete();
+       
 
     };
 
@@ -154,6 +187,7 @@ client.on("messageDelete", (message) => {
             text: "Qué chucha borras tarao'"
         }
     }})
+
 });
 
 client.login(config.token);
