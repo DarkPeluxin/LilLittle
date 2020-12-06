@@ -16,7 +16,7 @@ client.on('ready', () => {
 
     client.user.setPresence( {
         activity: {
-            name: `v. 1.3.1b`,
+            name: `v. 1.4.9c`,
             type: "PLAYING"
         },
         status: "idle"
