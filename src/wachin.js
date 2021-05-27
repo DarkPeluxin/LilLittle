@@ -11,12 +11,15 @@ client.on('ready', () => {
     console.log(client.user.presence.status);
 
     var canal = client.channels.cache.get(canal_id);
+    //canal.messages.fetch({ limit: 1}).then(messages => {
+        //msg_id = messages.fisrt();
+    //})
     canal.bulkDelete(20);
     crearMsgTicket(canal);
 
     client.user.setPresence( {
         activity: {
-            name: `v. 1.4.9c`,
+            name: `v. 1.6.3c`,
             type: "PLAYING"
         },
         status: "idle"
@@ -43,7 +46,7 @@ con temas sobre nuestro servidor, no tenemos asistencia para cosas externas al s
 **_Recomendaciones al usuario antes de acceder el servicio de chat:_**
 > Evite dar información personal a las personas que ha conocido personalmente en el chat.
 > Sea consciente de que puede ser objeto de mensajes indeseados por parte de otros usuarios en el chat. Se sugiere ignorarlos y notificar este tipo de irregularidades.
-> Recuerda, la gente es cagón como Peluxin jaaaa!`).then(msg => {
+> Recuerda, la gente es cagona como Peluxin jaaaa!`).then(msg => {
         msg_id = msg.id;
         msg.react("🎟");
     });
@@ -71,7 +74,7 @@ function crearTicket(message, user){
 
             var rol = message.guild.roles.cache.find(r => r.name === "@everyone");
             var mod = message.guild.roles.cache.find(mo => mo.name === "Mod");
-            var mannager = message.guild.roles.cache.find(ma => ma.name === "Mannager");
+            var manager = message.guild.roles.cache.find(ma => ma.name === "Manager");
             var cosor = message.guild.roles.cache.find(cos => cos.name === "Coso Ranger");
             var coronita = message.guild.roles.cache.find(co => co.name === "Coronita");
 
@@ -97,7 +100,7 @@ function crearTicket(message, user){
                 READ_MESSAGE_HISTORY: true,
             });
 
-            channel.createOverwrite(mannager, {
+            channel.createOverwrite(manager, {
                 SEND_MESSAGES: true,
                 VIEW_CHANNEL: true,
                 READ_MESSAGE_HISTORY: true,
@@ -116,14 +119,14 @@ client.on('message', async message => {
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
     const command = args.shift().toLowerCase();
 
-    if(command === 'redes') {
+    if(message.content.startsWith(prefix + 'redes')) {
         message.channel.send({embed: {
             color: 3447003,
             title: "Sígueme y entérate de todo.",
             description: "_Aquí puedes encontrarme_.",
             fields: [{
                 name: "FACEBOOK",
-                value: "https://fg.gg.DarkPeluxin"
+                value: "http://PELUXIN.Intocablesrp.com"
             },
             {   
                 name: "YOUTUBE",
@@ -140,7 +143,7 @@ client.on('message', async message => {
         message.delete();
     };
 
-    if(command === 'safa'){
+    if(message.content.startsWith(prefix + 'safa')){
 
     if(!message.member.hasPermission("BAN_MEMBERS")) return;
     if(!message.guild.me.hasPermission("BAN_MEMBERS")) return;
@@ -161,7 +164,7 @@ client.on('message', async message => {
     };
    
     
-    if(command === 'ñofi') {
+    if(message.content.startsWith(prefix + 'ñofi')) {
         let user = message.mentions.users.first();
         if (!user) return message.channel.send(`¿Se supone que tengo que adivinar a quién botar? Idiota.`)
         let razon = args.slice(1).join(' ');
@@ -177,7 +180,7 @@ client.on('message', async message => {
         message.delete();
     };
 
-    if(command == 'clean') {
+    if(message.content.startsWith(prefix + 'clean')) {
 
         var perms = message.member.hasPermission("MANAGE_CHANNELS");
         if(!perms) return;
@@ -185,8 +188,8 @@ client.on('message', async message => {
         message.channel.bulkDelete(cantidad);
     };
 
-    if(command === 'shh') {
-    if(!message.member.hasPermission("ADMINISTRATOR")) return;
+    if(message.content.startsWith(prefix + 'shh')) {
+    if(!message.member.hasPermission("KICK_MEMBERS")) return;
 
     let channels = message.guild.channels.cache.filter(ch => ch.type !== 'category');
     let user = message.mentions.members.first()
@@ -203,12 +206,12 @@ client.on('message', async message => {
     })
 
     message.channel.send(`:microphone2:    ${message.author} le cerró el poto a ${user.toString()}. 
-> Razón: _${razon}_`);
-       message.delete();
+    > Razón: _${razon}_`)
+    message.delete();
     };
     
-    if(command === "call") {
-    if(!message.member.hasPermission("ADMINISTRATOR")) return;
+    if(message.content.startsWith(prefix + 'call')) {
+    if(!message.member.hasPermission("KICK_MEMBERS")) return;
 
         let channels = message.guild.channels.cache.filter(ch => ch.type !== 'category');
         let user = message.mentions.members.first()
@@ -228,7 +231,7 @@ client.on('message', async message => {
     };
     
     if(message.content === "/cerrar"){
-        if(!message.member.hasPermission("ADMINISTRATOR")) return;
+        if(!message.member.hasPermission("MANAGE_CHANNELS")) return;
         if(message.channel.name.startsWith("ticket-")) message.channel.delete();
     };
 
@@ -255,19 +258,29 @@ client.on('message', async message => {
 });
 
 client.on("messageDelete", (message) => {
-    let canal = client.channels.cache.get('782138729354493952');
-    canal.send({embed: {
-        color: 6184542,
-        author: {
-            name: (`${message.author.username} (${message.author.id})`),
-            icon_url: message.author.avatarURL()
-        },
-        description: `${message}`,
-        timestamp: new Date(),
-        footer: {
-            text: "Qué chucha borras tarao'"
+    if (message.author.bot || message.content.startsWith("-")) return;
+        let canal = client.channels.cache.get('782138729354493952');
+        let img;
+        if(message.attachments.array()[0]){
+            img=message.attachments.array()[0].proxyURL;
         }
-    }})
+    canal.send({
+        embed: {
+            color: 6184542,
+            author: {
+                name: `${message.author.username} (${message.author.id})`,
+                icon_url: message.author.avatarURL(),
+            },
+            description: `${message}`,
+            timestamp: new Date(),
+            image:{
+                url:img,
+            },
+            footer: {
+                text: "Qué chucha borras tarao' •  Eliminado de " +message.channel.name,
+            },
+        },
+    });
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {
