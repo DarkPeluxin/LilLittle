@@ -19,7 +19,7 @@ client.on('ready', () => {
 
     client.user.setPresence( {
         activity: {
-            name: `v. 1.6.3c`,
+            name: `GORDOXIN RP - EL ORIGINAL`,
             type: "PLAYING"
         },
         status: "idle"
@@ -115,9 +115,49 @@ function crearTicket(message, user){
     }
 };
 
+let maxCount = 1;
+let msgCount = 0
+let locked = {};
+let sticky={};
+let stickyId={};
+
 client.on('message', async message => {
     const args = message.content.slice(prefix.length).trim().split(/ +/g)
     const command = args.shift().toLowerCase();
+    const member = message.member;
+
+    if(stickyId[message.channel.id]){
+        msgCount++;
+        if(msgCount==maxCount){
+          stickyId[message.channel.id].delete();
+          stickyId[message.channel.id]=await message.channel.send(sticky[message.channel.id]);
+          msgCount=0;
+        }
+      };
+      
+    if(message.content.startsWith('.sticky')){
+        if(member.roles.cache.has('745107506241601546')|| member.roles.cache.has('745106491887059015')|| member.roles.cache.has('745106687249088634')|| member.roles.cache.has('770830933565112391')|| member.roles.cache.has('893974797954994208')|| member.roles.cache.has('886011703681249340') ){
+          let channel = message.channel;
+          let messageString = message.content.split(' ').slice(1).join(' ');
+          stickyId[channel.id]=await message.channel.send(messageString);
+          sticky[channel.id]=messageString;
+  
+          message.delete();
+        }
+      };
+
+    if(message.content.startsWith('.unsticky')){
+        if(member.roles.cache.has('745107506241601546')|| member.roles.cache.has('745106491887059015')|| member.roles.cache.has('745106687249088634')|| member.roles.cache.has('770830933565112391')|| member.roles.cache.has('893974797954994208')|| member.roles.cache.has('886011703681249340') ){
+          let channel = message.channel;
+          if(stickyId[channel.id]){
+            stickyId[channel.id].delete();
+            stickyId[channel.id]=null;
+            sticky[channel.id]=null;
+  
+          }
+          message.delete();
+        }
+      };
 
     if(message.content.startsWith(prefix + 'redes')) {
         message.channel.send({embed: {
@@ -125,6 +165,14 @@ client.on('message', async message => {
             title: "Sígueme y entérate de todo.",
             description: "_Aquí puedes encontrarme_.",
             fields: [{
+                name: "TROVO LIVE",
+                value: "https://trovo.live/LilPeluxin"
+            },
+            {
+                name: "INSTAGRAM",
+                value: "https://instagram.com/lilpeluxin"
+            },
+            {
                 name: "FACEBOOK",
                 value: "http://PELUXIN.Intocablesrp.com"
             },
