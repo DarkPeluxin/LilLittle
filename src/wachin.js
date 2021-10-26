@@ -287,6 +287,26 @@ client.on('message', async message => {
         message.channel.send('gampi');
     }
 
+    if (message.content === 'Pelu'){
+        message.channel.send('Sonso');
+    }
+
+    if (message.content === 'Peluxin'){
+        message.channel.send('Sonso');
+    }
+
+    if (message.content === 'Peluking'){
+        message.channel.send('Sonso');
+    }
+
+    if (message.content === 'Peluchin'){
+        message.channel.send('Sonso');
+    }
+
+    if (message.content === 'Gordoxin'){
+        message.channel.send('Sonso');
+    }
+
     if (message.content === 'chupa'){
         message.channel.send('gampi');
     }
